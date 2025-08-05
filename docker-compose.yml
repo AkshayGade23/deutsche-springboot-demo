@@ -12,6 +12,13 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d deutsche" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 
   app:
     image: akshaygade23/deutsche-spring-boot:latest
@@ -23,14 +30,14 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/deutsche
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: akshay
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
       SERVER_PORT: 8090
       SERVER_SERVLET_CONTEXT_PATH: /api/v1
       SPRING_APPLICATION_NAME: deutsche-springboot-demo
       LOGGING_FILE_NAME: app.log
       MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
-      MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://localhost:9411/api/v2/spans
-      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: '*'
+    restart: unless-stopped
 
 volumes:
   db_data:
