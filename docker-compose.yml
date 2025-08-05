@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: deutsche-postgres
+    environment:
+      POSTGRES_DB: deutsche
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: akshay
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    image: akshaygade23/deutsche-spring-boot:latest
+    depends_on:
+      - db
+    ports:
+      - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/deutsche
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: akshay
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SERVER_PORT: 8090
+      SERVER_SERVLET_CONTEXT_PATH: /api/v1
+      SPRING_APPLICATION_NAME: deutsche-springboot-demo
+      LOGGING_FILE_NAME: app.log
+      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
+      MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://localhost:9411/api/v2/spans
+      MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: '*'
+
+volumes:
+  db_data:
