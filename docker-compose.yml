@@ -1,8 +1,8 @@
-version: '3.8'
+version: '3.9'
 
 services:
   db:
-    image: postgres:15
+    image: postgres:latest
     container_name: postgres-db
     environment:
       POSTGRES_DB: deutsche
@@ -20,7 +20,7 @@ services:
 
   app:
     build: .
-    container_name: deutsche-app
+    container_name: deutsche-springboot
     depends_on:
       db:
         condition: service_healthy
