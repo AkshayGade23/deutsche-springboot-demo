@@ -3,41 +3,41 @@ version: '3.8'
 services:
   db:
     image: postgres:16
-    container_name: deutsche-db
+    container_name: deutsche-postgres
     environment:
       POSTGRES_DB: deutsche
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: akshay
     ports:
       - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
-      timeout: 5s
+      timeout: 5s 
       retries: 5
 
   app:
+    build: .
     image: akshaygade23/deutsche-spring-boot:latest
     container_name: deutsche-app
+    ports:
+      - "8090:8090"
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "8090:8090"
+
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/deutsche
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: akshay
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SERVER_PORT: 8090
-      SERVER_SERVLET_CONTEXT_PATH: /api/v1
-      SPRING_APPLICATION_NAME: deutsche-springboot-demo
-      LOGGING_FILE_NAME: app.log
-      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
-    restart: unless-stopped
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+#      SERVER_PORT: 8090
+#      SERVER_SERVLET_CONTEXT_PATH: /api/v1
+#      SPRING_APPLICATION_NAME: deutsche-springboot-demo
+#      LOGGING_FILE_NAME: app.log
+#      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
+#    restart: unless-stopped
 
-volumes:
-  db_data:
+#volumes:
+#  db_data:
