@@ -31,26 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-
-# Build & distribution
-*.jar
-*.war
-*.ear
-
-# Environment files
-.env
-.env.*
-
-# Local configuration
-application-local.properties
-application-dev.properties
-
-# Docker
-*.pid
-*.tar
-*.gz
-*.swp
-
-# Tests
-/test-output/
