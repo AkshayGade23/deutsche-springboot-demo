@@ -19,25 +19,19 @@ services:
       - db_data:/var/lib/postgresql/data
 
   app:
-    build: .
-    container_name: deutsche-springboot
+    image: akshaygade23/deutsche-spring-boot:latest
     depends_on:
       db:
         condition: service_healthy
     ports:
       - "8090:8090"
     environment:
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/deutsche
-#      SPRING_DATASOURCE_USERNAME: postgres
-#      SPRING_DATASOURCE_PASSWORD: akshay
-#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-#      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
 #      SERVER_PORT: 8090
 #      SERVER_SERVLET_CONTEXT_PATH: /api/v1
 #      SPRING_APPLICATION_NAME: deutsche-springboot-demo
 #      LOGGING_FILE_NAME: app.log
 #      MANAGEMENT_TRACING_SAMPLING_PROBABILITY: 1.0
-#    restart: unless-stopped
+#      restart: unless-stopped
 
 volumes:
   db_data:
