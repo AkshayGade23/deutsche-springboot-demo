@@ -2,26 +2,28 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:17
-    container_name: deutsche-postgres
+    image: postgres:16
+    container_name: deutsche-db
     environment:
       POSTGRES_DB: deutsche
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: akshay
-
+    ports:
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-    restart: unless-stopped
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U root -d deutsche" ]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-
   app:
     image: akshaygade23/deutsche-spring-boot:latest
+    container_name: deutsche-app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8090:8090"
     environment:
